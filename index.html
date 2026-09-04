@@ -5,81 +5,292 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0b1220">
-<title>Asta Radiati</title>
+<title>Asta Radiati - Scarsenal</title>
 <style>
 :root{--bg:#0a0f1a;--card:#121a2b;--line:#1e2a3f;--text:#e8eef7;--muted:#8090a8;--blue:#38bdf8;--green:#22c55e;--red:#ef4444;--orange:#fb923c;--yellow:#eab308;--sc:#0c4a6e;--safe:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.35;padding:12px 12px calc(16px + var(--safe));max-width:780px;margin:0 auto;font-size:15px}
 h1{font-size:1.2rem;font-weight:800;color:var(--blue);letter-spacing:-.02em}
 .sub{color:var(--muted);font-size:.78rem;margin:3px 0 12px}
-.credits{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.credits{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
 @media(min-width:560px){.credits{grid-template-columns:repeat(4,1fr)}}
 .chip{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px;display:flex;align-items:center;gap:9px;cursor:pointer}
 .chip.me{background:var(--sc);border-color:#0284c7}
-.chip img{width:36px;height:36px;border-radius:8px;object-fit:contain;background:#0a0f1a;flex-shrink:0}
 .chip .meta{min-width:0;flex:1}
 .chip .nm{font-size:.7rem;color:var(--muted);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .chip.me .nm{color:#7dd3fc}
 .chip .cr{font-size:1.1rem;font-weight:800;font-variant-numeric:tabular-nums}
-.hi{color:var(--green)}.md{color:var(--yellow)}.lo{color:var(--red)}
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
-.tab{background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:10px 4px;font-weight:700;font-size:.88rem;cursor:pointer}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px}
+.tab{background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:8px 4px;font-weight:700;font-size:.8rem;cursor:pointer;text-align:center}
 .tab.on{border-color:var(--blue);color:var(--blue);background:#0c4a6e}
-.tab span{display:block;font-size:.68rem;font-weight:500;opacity:.7;margin-top:2px}
-.hero{text-align:center;padding:18px 14px 16px;margin-bottom:12px;background:linear-gradient(165deg,#0c4a6e 0%,#121a2b 70%);border:1px solid #0369a1;border-radius:16px}
-.badge{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.72rem;font-weight:800;margin-bottom:8px}
+.hero{text-align:center;padding:16px 14px;margin-bottom:12px;background:linear-gradient(165deg,#0c4a6e 0%,#121a2b 70%);border:1px solid #0369a1;border-radius:16px}
+.badge{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.72rem;font-weight:800;margin-bottom:6px}
 .bP{background:#1e3a5f;color:#7dd3fc}.bD{background:#14532d;color:#86efac}.bC{background:#713f12;color:#fde047}.bA{background:#7f1d1d;color:#fca5a5}
-.pname{font-size:1.65rem;font-weight:800;letter-spacing:-.03em;margin:2px 0 6px}
-.pmeta{color:var(--muted);font-size:.9rem}.pmeta b{color:var(--orange)}
-.prog{font-size:.75rem;color:var(--muted);margin-top:10px;opacity:.85}
+.pname{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;margin:2px 0 4px}
+.pmeta{color:var(--muted);font-size:.88rem}.pmeta b{color:var(--orange)}
+.prog{font-size:.75rem;color:var(--muted);margin-top:8px;opacity:.85}
 .tbox{display:none;margin-top:12px;text-align:left;background:#052e16;border:1px solid #16a34a;border-radius:12px;padding:11px 13px}
-.tbox.on{display:block}.tmax{font-size:1.05rem;font-weight:800;color:#86efac}.tmax b{color:var(--orange);font-size:1.25rem}
-.talts{font-size:.82rem;color:#bbf7d0;margin-top:5px;line-height:1.45}.talts b{color:#fde047}.talts .gone{color:#64748b;text-decoration:line-through}
+.tbox.on{display:block}.tmax{font-size:1rem;font-weight:800;color:#86efac}.tmax b{color:var(--orange);font-size:1.2rem}
+.talts{font-size:.8rem;color:#bbf7d0;margin-top:4px;line-height:1.4}
 .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.btn{border:none;border-radius:12px;padding:15px 10px;font-weight:800;font-size:1rem;cursor:pointer;min-height:54px}
-.btn:active{transform:scale(.97)}.btn:disabled{opacity:.35}
+.btn{border:none;border-radius:12px;padding:14px 10px;font-weight:800;font-size:1rem;cursor:pointer;min-height:50px}
+.btn:active{transform:scale(.98)}.btn:disabled{opacity:.35}
 .bpass{background:#2a3548;color:#e2e8f0}.bbuy{background:var(--green);color:#052e16}
 .panel{display:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
 .panel.on{display:block}
 label{display:block;font-size:.7rem;color:var(--muted);margin-bottom:4px;font-weight:700;text-transform:uppercase}
 select,input[type=number]{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:12px;font-size:16px;-webkit-appearance:none}
-.row{display:grid;grid-template-columns:1fr 88px;gap:8px;margin-bottom:10px}
+.row{display:grid;grid-template-columns:1fr 90px;gap:8px;margin-bottom:10px}
 .bok{width:100%;background:var(--green);color:#052e16}
 .strat{font-size:.8rem;color:var(--muted);line-height:1.45;background:var(--card);border-radius:12px;padding:10px 12px;margin-bottom:12px;border:1px solid var(--line)}.strat b{color:#7dd3fc}
 .logwrap{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px}
-.log{max-height:150px;overflow-y:auto;font-size:.78rem}
-.le{padding:5px 0;border-bottom:1px solid #1a2538}.le:last-child{border-bottom:none}.le b{color:var(--blue)}
+.log{max-height:150px;overflow-y:auto;font-size:.78rem;font-family:monospace}
+.le{padding:4px 0;border-bottom:1px solid #1a2538;display:flex;justify-content:space-between}.le:last-child{border-bottom:none}.le b{color:var(--blue)}
 .tools{display:flex;gap:8px;margin-top:8px}
 .sm{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:7px 12px;font-size:.78rem;font-weight:600;cursor:pointer}
 </style>
 </head>
 <body>
+
 <h1>🎯 Asta Radiati</h1>
-<p class="sub">P → D → C → A · alfabetico · Scarsenal 320</p>
+<p class="sub">P → D → C → A · Scarsenal Cassa Residua: 322 cr</p>
+
 <div class="credits" id="credits"></div>
 <div class="tabs" id="tabs"></div>
+
 <div class="hero">
   <div class="badge bP" id="badge">P</div>
   <div class="pname" id="name">—</div>
   <div class="pmeta" id="meta">—</div>
   <div class="prog" id="prog">—</div>
-  <div class="tbox" id="tbox"><div class="tmax" id="tmax"></div><div class="talts" id="talts"></div></div>
+  <div class="tbox" id="tbox">
+    <div class="tmax" id="tmax"></div>
+    <div class="talts" id="talts"></div>
+  </div>
 </div>
+
 <div class="acts">
-  <button class="btn bpass" id="bpass" onclick="pass()">Passa →</button>
-  <button class="btn bbuy" id="bbuy" onclick="openBuy()">Assegna</button>
+  <button class="btn bpass" onclick="nextPlayer()">Passa →</button>
+  <button class="btn bbuy" onclick="togglePanel()">Assegna</button>
 </div>
+
 <div class="panel" id="panel">
   <div class="row">
-    <div><label>Squadra</label><select id="team"></select></div>
-    <div><label>Crediti</label><input type="number" id="price" min="1" value="1" inputmode="numeric"></div>
+    <div><label>Squadra</label><select id="teamSelect"></select></div>
+    <div><label>Crediti</label><input type="number" id="priceInput" min="1" value="1" inputmode="numeric"></div>
   </div>
-  <button class="btn bok" onclick="buy()">Conferma</button>
+  <button class="btn bok" onclick="confirmBuy()">Conferma Acquisto</button>
 </div>
-<div class="strat">Target: <b>Vasquez</b> 28 · <b>Kessiè</b> 40 · <b>Woltemade</b> 65 · <b>Beto</b> 55<br>Arriva agli A con ≥ <b>200–220</b> crediti</div>
-<div class="logwrap"><div class="log" id="log"></div>
-  <div class="tools"><button class="sm" onclick="resetCr()">Reset crediti</button><button class="sm" onclick="clearLog()">Pulisci log</button></div>
+
+<div class="strat">
+  Target Prioritari: <b>Vasquez</b> 28 · <b>Kessiè</b> 40 · <b>Woltemade</b> 65 · <b>Beto</b> 55<br>
+  Obiettivo crediti reparto Attacco: ≥ <b>200–220</b>
 </div>
-<script src="app.js"></script>
+
+<div class="logwrap">
+  <div class="log" id="log"></div>
+  <div class="tools">
+    <button class="sm" onclick="undoLast()">Annulla Ultimo</button>
+    <button class="sm" onclick="resetAll()">Reset a Dati Excel</button>
+  </div>
+</div>
+
+<script>
+// Dati Reali delle squadre sincronizzati dall'Excel I Radiati
+const INITIAL_TEAMS = [
+  { name: "Scarsenal", credits: 322, me: true },
+  { name: "COCA JUNIORS", credits: 187 },
+  { name: "RB SALISBURRO II", credits: 142 },
+  { name: "Bunga Bunga Boys", credits: 112 },
+  { name: "Junglespree FC", credits: 28 },
+  { name: "LAUTARALLO", credits: 29 },
+  { name: "Fc Tonno Rio MALEN", credits: 19 },
+  { name: "FC. SanPio", credits: 12 }
+];
+
+const PLAYERS = [
+  // --- PORTIERI (P) ---
+  { role: "P", name: "Vasquez", team: "Empoli", max: 28, alt: "Turati, Suzuki" },
+  { role: "P", name: "Turati", team: "Monza", max: 15, alt: "Suzuki" },
+  { role: "P", name: "Suzuki", team: "Parma", max: 12, alt: "Montipò" },
+
+  // --- DIFENSORI (D) ---
+  { role: "D", name: "Theate", team: "Eintracht / Target", max: 18, alt: "Kolasinac, Coco" },
+  { role: "D", name: "Tavares", team: "Lazio", max: 22, alt: "Gila, Romagnoli" },
+  { role: "D", name: "Gosens", team: "Fiorentina", max: 22, alt: "Dodo, Biraghi" },
+  { role: "D", name: "Luperto", team: "Cagliari", max: 8, alt: "Izzo" },
+
+  // --- CENTROCAMPISTI (C) ---
+  { role: "C", name: "Kessiè", team: "Svincolato / Target", max: 40, alt: "McTominay, Loftus-Cheek" },
+  { role: "C", name: "Neres", team: "Napoli", max: 35, alt: "Politano" },
+  { role: "C", name: "Man", team: "Parma", max: 38, alt: "Bernabé, Sohm" },
+  { role: "C", name: "Conceicao", team: "Juventus", max: 25, alt: "Thuram" },
+
+  // --- ATTACCANTI (A) ---
+  { role: "A", name: "Woltemade", team: "Stoccarda / Target", max: 65, alt: "Kean, Lucca" },
+  { role: "A", name: "Beto", team: "Everton / Target", max: 55, alt: "Pinamonti, Mosquera" },
+  { role: "A", name: "Lucca", team: "Udinese", max: 55, alt: "Thauvin" },
+  { role: "A", name: "Castro", team: "Bologna", max: 50, alt: "Dallinga, Orsolini" }
+];
+
+let state = JSON.parse(localStorage.getItem('asta_radiati_state')) || {
+  teams: INITIAL_TEAMS,
+  currentIndex: 0,
+  history: [],
+  currentRole: 'ALL'
+};
+
+function saveState() {
+  localStorage.setItem('asta_radiati_state', JSON.stringify(state));
+  render();
+}
+
+function getFilteredPlayers() {
+  if (state.currentRole === 'ALL') return PLAYERS;
+  return PLAYERS.filter(p => p.role === state.currentRole);
+}
+
+function renderTabs() {
+  const roles = [
+    { code: 'ALL', label: 'Tutti' },
+    { code: 'P', label: 'P' },
+    { code: 'D', label: 'D' },
+    { code: 'C', label: 'C' },
+    { code: 'A', label: 'A' }
+  ];
+
+  const tabsEl = document.getElementById('tabs');
+  tabsEl.innerHTML = roles.map(r => `
+    <button class="tab ${state.currentRole === r.code ? 'on' : ''}" onclick="setRole('${r.code}')">
+      ${r.label}
+    </button>
+  `).join('');
+}
+
+function setRole(role) {
+  state.currentRole = role;
+  state.currentIndex = 0;
+  saveState();
+}
+
+function render() {
+  renderTabs();
+
+  // Render Credits
+  const creditsEl = document.getElementById('credits');
+  creditsEl.innerHTML = state.teams.map(t => `
+    <div class="chip ${t.me ? 'me' : ''}">
+      <div class="meta">
+        <div class="nm">${t.name}</div>
+        <div class="cr">${t.credits} cr</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Render Select Options
+  const selectEl = document.getElementById('teamSelect');
+  selectEl.innerHTML = state.teams.map((t, idx) => `<option value="${idx}">${t.name} (${t.credits}cr)</option>`).join('');
+
+  // Render Current Player
+  const filteredList = getFilteredPlayers();
+  const p = filteredList[state.currentIndex];
+
+  if (p) {
+    document.getElementById('badge').textContent = p.role;
+    document.getElementById('badge').className = `badge b${p.role}`;
+    document.getElementById('name').textContent = p.name;
+    document.getElementById('meta').textContent = p.team;
+    document.getElementById('prog').textContent = `Giocatore ${state.currentIndex + 1} di ${filteredList.length} (${state.currentRole})`;
+    
+    if (p.max) {
+      document.getElementById('tbox').classList.add('on');
+      document.getElementById('tmax').innerHTML = `Max Bid Scarsenal: <b>${p.max} cr</b>`;
+      document.getElementById('talts').innerHTML = `Alternative: <b>${p.alt || 'Nessuna'}</b>`;
+    } else {
+      document.getElementById('tbox').classList.remove('on');
+    }
+  } else {
+    document.getElementById('name').textContent = "Fine Lista";
+    document.getElementById('meta').textContent = "Nessun altro giocatore in questo filtro.";
+    document.getElementById('tbox').classList.remove('on');
+  }
+
+  // Render Log
+  const logEl = document.getElementById('log');
+  logEl.innerHTML = state.history.slice().reverse().map(h => `
+    <div class="le">
+      <span><b>${h.player}</b> → ${h.team}</span>
+      <span>${h.price} cr</span>
+    </div>
+  `).join('');
+}
+
+function nextPlayer() {
+  const filteredList = getFilteredPlayers();
+  if (state.currentIndex < filteredList.length - 1) {
+    state.currentIndex++;
+    saveState();
+  }
+}
+
+function togglePanel() {
+  const panel = document.getElementById('panel');
+  panel.classList.toggle('on');
+}
+
+function confirmBuy() {
+  const teamIdx = document.getElementById('teamSelect').value;
+  const price = parseInt(document.getElementById('priceInput').value, 10);
+  const filteredList = getFilteredPlayers();
+  const player = filteredList[state.currentIndex];
+
+  if (!player || isNaN(price) || price < 1) return;
+
+  if (state.teams[teamIdx].credits < price) {
+    alert("Crediti insufficienti per questa squadra!");
+    return;
+  }
+
+  state.teams[teamIdx].credits -= price;
+  
+  state.history.push({
+    player: player.name,
+    team: state.teams[teamIdx].name,
+    teamIdx: teamIdx,
+    price: price,
+    playerIdx: state.currentIndex,
+    role: state.currentRole
+  });
+
+  document.getElementById('panel').classList.remove('on');
+  document.getElementById('priceInput').value = 1;
+
+  nextPlayer();
+}
+
+function undoLast() {
+  if (state.history.length === 0) return;
+  const last = state.history.pop();
+  state.teams[last.teamIdx].credits += last.price;
+  state.currentRole = last.role || 'ALL';
+  state.currentIndex = last.playerIdx;
+  saveState();
+}
+
+function resetAll() {
+  if (confirm("Vuoi azzerare l'asta e ripristinare i crediti estratti dal file Excel?")) {
+    localStorage.removeItem('asta_radiati_state');
+    state = {
+      teams: INITIAL_TEAMS,
+      currentIndex: 0,
+      history: [],
+      currentRole: 'ALL'
+    };
+    render();
+  }
+}
+
+render();
+</script>
 </body>
 </html>
