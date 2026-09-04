@@ -33,7 +33,6 @@ h1{font-size:1.2rem;font-weight:800;color:var(--blue);letter-spacing:-.02em}
 .tbox.on{display:block}.tmax{font-size:1rem;font-weight:800;color:#86efac}.tmax b{color:var(--orange);font-size:1.2rem}
 .talts{font-size:.8rem;color:#bbf7d0;margin-top:4px;line-height:1.4}
 
-/* Box Ricerca */
 .search-box{margin-bottom:12px;position:relative}
 .search-input{width:100%;background:var(--card);border:1px solid var(--blue);color:var(--text);border-radius:10px;padding:12px 14px;font-size:.95rem;outline:none}
 .search-input::placeholder{color:var(--muted)}
@@ -59,7 +58,7 @@ select,input[type=number]{width:100%;background:var(--bg);border:1px solid var(-
 <body>
 
 <h1>🎯 Asta Radiati</h1>
-<p class="sub">Ordine Alfabetico · Scarsenal Cassa Residua: 322 cr</p>
+<p class="sub">P → D → C → A (Alfabetico) · Scarsenal Cassa: 322 cr</p>
 
 <div class="credits" id="credits"></div>
 <div class="tabs" id="tabs"></div>
@@ -75,7 +74,6 @@ select,input[type=number]{width:100%;background:var(--bg);border:1px solid var(-
   </div>
 </div>
 
-<!-- Box Cerca Giocatore -->
 <div class="search-box">
   <input type="text" id="searchInput" class="search-input" placeholder="🔍 Cerca nome o squadra..." oninput="onSearchChange()">
 </div>
@@ -107,7 +105,7 @@ select,input[type=number]{width:100%;background:var(--bg);border:1px solid var(-
 </div>
 
 <script>
-// Dati Reali delle squadre sincronizzati dall'Excel I Radiati[span_0](start_span)[span_0](end_span)
+// Dati Reali delle squadre sincronizzati dall'Excel I Radiati[span_1](start_span)[span_1](end_span)
 const INITIAL_TEAMS = [
   { name: "Scarsenal", credits: 322, me: true },
   { name: "COCA JUNIORS", credits: 187 },
@@ -119,27 +117,39 @@ const INITIAL_TEAMS = [
   { name: "FC. SanPio", credits: 12 }
 ];
 
-// Listone Calciatori ORDINATO ALFABETICAMENTE
 const RAW_PLAYERS = [
-  { role: "A", name: "Beto", team: "Everton / Target", max: 55, alt: "Pinamonti, Mosquera" },
-  { role: "A", name: "Castro", team: "Bologna", max: 50, alt: "Dallinga, Orsolini" },
-  { role: "C", name: "Conceicao", team: "Juventus", max: 25, alt: "Thuram" },
-  { role: "D", name: "Gosens", team: "Fiorentina", max: 22, alt: "Dodo, Biraghi" },
-  { role: "C", name: "Kessiè", team: "Svincolato / Target", max: 40, alt: "McTominay, Loftus-Cheek" },
-  { role: "A", name: "Lucca", team: "Udinese", max: 55, alt: "Thauvin" },
-  { role: "D", name: "Luperto", team: "Cagliari", max: 8, alt: "Izzo" },
-  { role: "C", name: "Man", team: "Parma", max: 38, alt: "Bernabé, Sohm" },
-  { role: "C", name: "Neres", team: "Napoli", max: 35, alt: "Politano" },
+  // --- PORTIERI (P) ---
   { role: "P", name: "Suzuki", team: "Parma", max: 12, alt: "Montipò" },
-  { role: "D", name: "Tavares", team: "Lazio", max: 22, alt: "Gila, Romagnoli" },
-  { role: "D", name: "Theate", team: "Eintracht / Target", max: 18, alt: "Kolasinac, Coco" },
   { role: "P", name: "Turati", team: "Monza", max: 15, alt: "Suzuki" },
   { role: "P", name: "Vasquez", team: "Empoli", max: 28, alt: "Turati, Suzuki" },
+
+  // --- DIFENSORI (D) ---
+  { role: "D", name: "Gosens", team: "Fiorentina", max: 22, alt: "Dodo, Biraghi" },
+  { role: "D", name: "Luperto", team: "Cagliari", max: 8, alt: "Izzo" },
+  { role: "D", name: "Tavares", team: "Lazio", max: 22, alt: "Gila, Romagnoli" },
+  { role: "D", name: "Theate", team: "Eintracht / Target", max: 18, alt: "Kolasinac, Coco" },
+
+  // --- CENTROCAMPISTI (C) ---
+  { role: "C", name: "Conceicao", team: "Juventus", max: 25, alt: "Thuram" },
+  { role: "C", name: "Kessiè", team: "Svincolato / Target", max: 40, alt: "McTominay, Loftus-Cheek" },
+  { role: "C", name: "Man", team: "Parma", max: 38, alt: "Bernabé, Sohm" },
+  { role: "C", name: "Neres", team: "Napoli", max: 35, alt: "Politano" },
+
+  // --- ATTACCANTI (A) ---
+  { role: "A", name: "Beto", team: "Everton / Target", max: 55, alt: "Pinamonti, Mosquera" },
+  { role: "A", name: "Castro", team: "Bologna", max: 50, alt: "Dallinga, Orsolini" },
+  { role: "A", name: "Lucca", team: "Udinese", max: 55, alt: "Thauvin" },
   { role: "A", name: "Woltemade", team: "Stoccarda / Target", max: 65, alt: "Kean, Lucca" }
 ];
 
-// Ordinamento di sicurezza per garantire ordine alfabetico (A -> Z)
-const PLAYERS = RAW_PLAYERS.sort((a, b) => a.name.localeCompare(b.name));
+// Ordinamento: Prima per Ruolo (P -> D -> C -> A), poi Alfabetico (A -> Z)
+const ROLE_ORDER = { "P": 1, "D": 2, "C": 3, "A": 4 };
+const PLAYERS = RAW_PLAYERS.sort((a, b) => {
+  if (ROLE_ORDER[a.role] !== ROLE_ORDER[b.role]) {
+    return ROLE_ORDER[a.role] - ROLE_ORDER[b.role];
+  }
+  return a.name.localeCompare(b.name);
+});
 
 let searchQuery = "";
 
