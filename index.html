@@ -23,7 +23,7 @@ h1{font-size:1.2rem;font-weight:800;color:var(--blue);letter-spacing:-.02em}
 .tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px}
 .tab{background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:8px 4px;font-weight:700;font-size:.8rem;cursor:pointer;text-align:center}
 .tab.on{border-color:var(--blue);color:var(--blue);background:#0c4a6e}
-.hero{text-align:center;padding:16px 14px;margin-bottom:12px;background:linear-gradient(165deg,#0c4a6e 0%,#121a2b 70%);border:1px solid #0369a1;border-radius:16px}
+.hero{text-align:center;padding:16px 14px;margin-bottom:10px;background:linear-gradient(165deg,#0c4a6e 0%,#121a2b 70%);border:1px solid #0369a1;border-radius:16px}
 .badge{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.72rem;font-weight:800;margin-bottom:6px}
 .bP{background:#1e3a5f;color:#7dd3fc}.bD{background:#14532d;color:#86efac}.bC{background:#713f12;color:#fde047}.bA{background:#7f1d1d;color:#fca5a5}
 .pname{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;margin:2px 0 4px}
@@ -32,6 +32,12 @@ h1{font-size:1.2rem;font-weight:800;color:var(--blue);letter-spacing:-.02em}
 .tbox{display:none;margin-top:12px;text-align:left;background:#052e16;border:1px solid #16a34a;border-radius:12px;padding:11px 13px}
 .tbox.on{display:block}.tmax{font-size:1rem;font-weight:800;color:#86efac}.tmax b{color:var(--orange);font-size:1.2rem}
 .talts{font-size:.8rem;color:#bbf7d0;margin-top:4px;line-height:1.4}
+
+/* Box Ricerca */
+.search-box{margin-bottom:12px;position:relative}
+.search-input{width:100%;background:var(--card);border:1px solid var(--blue);color:var(--text);border-radius:10px;padding:12px 14px;font-size:.95rem;outline:none}
+.search-input::placeholder{color:var(--muted)}
+
 .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .btn{border:none;border-radius:12px;padding:14px 10px;font-weight:800;font-size:1rem;cursor:pointer;min-height:50px}
 .btn:active{transform:scale(.98)}.btn:disabled{opacity:.35}
@@ -53,7 +59,7 @@ select,input[type=number]{width:100%;background:var(--bg);border:1px solid var(-
 <body>
 
 <h1>🎯 Asta Radiati</h1>
-<p class="sub">P → D → C → A · Scarsenal Cassa Residua: 322 cr</p>
+<p class="sub">Ordine Alfabetico · Scarsenal Cassa Residua: 322 cr</p>
 
 <div class="credits" id="credits"></div>
 <div class="tabs" id="tabs"></div>
@@ -67,6 +73,11 @@ select,input[type=number]{width:100%;background:var(--bg);border:1px solid var(-
     <div class="tmax" id="tmax"></div>
     <div class="talts" id="talts"></div>
   </div>
+</div>
+
+<!-- Box Cerca Giocatore -->
+<div class="search-box">
+  <input type="text" id="searchInput" class="search-input" placeholder="🔍 Cerca nome o squadra..." oninput="onSearchChange()">
 </div>
 
 <div class="acts">
@@ -96,42 +107,41 @@ select,input[type=number]{width:100%;background:var(--bg);border:1px solid var(-
 </div>
 
 <script>
-// Dati Reali delle squadre sincronizzati dall'Excel I Radiati
+// Dati Reali delle squadre sincronizzati dall'Excel I Radiati[span_0](start_span)[span_0](end_span)
 const INITIAL_TEAMS = [
   { name: "Scarsenal", credits: 322, me: true },
   { name: "COCA JUNIORS", credits: 187 },
   { name: "RB SALISBURRO II", credits: 142 },
   { name: "Bunga Bunga Boys", credits: 112 },
-  { name: "Junglespree FC", credits: 28 },
   { name: "LAUTARALLO", credits: 29 },
+  { name: "Junglespree FC", credits: 28 },
   { name: "Fc Tonno Rio MALEN", credits: 19 },
   { name: "FC. SanPio", credits: 12 }
 ];
 
-const PLAYERS = [
-  // --- PORTIERI (P) ---
-  { role: "P", name: "Vasquez", team: "Empoli", max: 28, alt: "Turati, Suzuki" },
-  { role: "P", name: "Turati", team: "Monza", max: 15, alt: "Suzuki" },
-  { role: "P", name: "Suzuki", team: "Parma", max: 12, alt: "Montipò" },
-
-  // --- DIFENSORI (D) ---
-  { role: "D", name: "Theate", team: "Eintracht / Target", max: 18, alt: "Kolasinac, Coco" },
-  { role: "D", name: "Tavares", team: "Lazio", max: 22, alt: "Gila, Romagnoli" },
-  { role: "D", name: "Gosens", team: "Fiorentina", max: 22, alt: "Dodo, Biraghi" },
-  { role: "D", name: "Luperto", team: "Cagliari", max: 8, alt: "Izzo" },
-
-  // --- CENTROCAMPISTI (C) ---
-  { role: "C", name: "Kessiè", team: "Svincolato / Target", max: 40, alt: "McTominay, Loftus-Cheek" },
-  { role: "C", name: "Neres", team: "Napoli", max: 35, alt: "Politano" },
-  { role: "C", name: "Man", team: "Parma", max: 38, alt: "Bernabé, Sohm" },
-  { role: "C", name: "Conceicao", team: "Juventus", max: 25, alt: "Thuram" },
-
-  // --- ATTACCANTI (A) ---
-  { role: "A", name: "Woltemade", team: "Stoccarda / Target", max: 65, alt: "Kean, Lucca" },
+// Listone Calciatori ORDINATO ALFABETICAMENTE
+const RAW_PLAYERS = [
   { role: "A", name: "Beto", team: "Everton / Target", max: 55, alt: "Pinamonti, Mosquera" },
+  { role: "A", name: "Castro", team: "Bologna", max: 50, alt: "Dallinga, Orsolini" },
+  { role: "C", name: "Conceicao", team: "Juventus", max: 25, alt: "Thuram" },
+  { role: "D", name: "Gosens", team: "Fiorentina", max: 22, alt: "Dodo, Biraghi" },
+  { role: "C", name: "Kessiè", team: "Svincolato / Target", max: 40, alt: "McTominay, Loftus-Cheek" },
   { role: "A", name: "Lucca", team: "Udinese", max: 55, alt: "Thauvin" },
-  { role: "A", name: "Castro", team: "Bologna", max: 50, alt: "Dallinga, Orsolini" }
+  { role: "D", name: "Luperto", team: "Cagliari", max: 8, alt: "Izzo" },
+  { role: "C", name: "Man", team: "Parma", max: 38, alt: "Bernabé, Sohm" },
+  { role: "C", name: "Neres", team: "Napoli", max: 35, alt: "Politano" },
+  { role: "P", name: "Suzuki", team: "Parma", max: 12, alt: "Montipò" },
+  { role: "D", name: "Tavares", team: "Lazio", max: 22, alt: "Gila, Romagnoli" },
+  { role: "D", name: "Theate", team: "Eintracht / Target", max: 18, alt: "Kolasinac, Coco" },
+  { role: "P", name: "Turati", team: "Monza", max: 15, alt: "Suzuki" },
+  { role: "P", name: "Vasquez", team: "Empoli", max: 28, alt: "Turati, Suzuki" },
+  { role: "A", name: "Woltemade", team: "Stoccarda / Target", max: 65, alt: "Kean, Lucca" }
 ];
+
+// Ordinamento di sicurezza per garantire ordine alfabetico (A -> Z)
+const PLAYERS = RAW_PLAYERS.sort((a, b) => a.name.localeCompare(b.name));
+
+let searchQuery = "";
 
 let state = JSON.parse(localStorage.getItem('asta_radiati_state')) || {
   teams: INITIAL_TEAMS,
@@ -146,8 +156,18 @@ function saveState() {
 }
 
 function getFilteredPlayers() {
-  if (state.currentRole === 'ALL') return PLAYERS;
-  return PLAYERS.filter(p => p.role === state.currentRole);
+  return PLAYERS.filter(p => {
+    const matchesRole = (state.currentRole === 'ALL' || p.role === state.currentRole);
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          p.team.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesRole && matchesSearch;
+  });
+}
+
+function onSearchChange() {
+  searchQuery = document.getElementById('searchInput').value;
+  state.currentIndex = 0;
+  render();
 }
 
 function renderTabs() {
@@ -200,7 +220,7 @@ function render() {
     document.getElementById('badge').className = `badge b${p.role}`;
     document.getElementById('name').textContent = p.name;
     document.getElementById('meta').textContent = p.team;
-    document.getElementById('prog').textContent = `Giocatore ${state.currentIndex + 1} di ${filteredList.length} (${state.currentRole})`;
+    document.getElementById('prog').textContent = `Risultato ${state.currentIndex + 1} di ${filteredList.length}`;
     
     if (p.max) {
       document.getElementById('tbox').classList.add('on');
@@ -210,8 +230,9 @@ function render() {
       document.getElementById('tbox').classList.remove('on');
     }
   } else {
-    document.getElementById('name').textContent = "Fine Lista";
-    document.getElementById('meta').textContent = "Nessun altro giocatore in questo filtro.";
+    document.getElementById('name').textContent = "Nessun Risultato";
+    document.getElementById('meta').textContent = "Nessun calciatore corrisponde ai filtri/ricerca.";
+    document.getElementById('prog').textContent = "0 risultati";
     document.getElementById('tbox').classList.remove('on');
   }
 
